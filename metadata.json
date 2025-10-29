@@ -1,0 +1,5 @@
+{
+  "name": "Gaming Lounge System",
+  "description": "A comprehensive management system for a gaming lounge, featuring device tracking, session management, financial reporting, and administrative controls. Built with React and TypeScript, styled with Tailwind CSS.",
+  "requestFramePermissions": []
+}

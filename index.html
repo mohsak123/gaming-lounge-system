@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نظام صالة الألعاب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Cairo', sans-serif;
+      }
+      /* Neon Theme Overrides */
+      .neon.dark body {
+        background-color: #020617; /* slate-950 */
+        color: #f8fafc; /* slate-50 */
+      }
+      .neon.dark .dark\:bg-gray-900 { background-color: #020617 !important; }
+      .neon.dark .dark\:bg-gray-800 { background-color: #0f172a !important; }
+      .neon.dark .dark\:bg-gray-700 { background-color: #1e293b !important; }
+      .neon.dark .dark\:bg-gray-600 { background-color: #334155 !important; }
+
+      .neon.dark .dark\:text-gray-100 { color: #f8fafc !important; }
+      .neon.dark .dark\:text-gray-200 { color: #e2e8f0 !important; }
+      .neon.dark .dark\:text-gray-300 { color: #cbd5e1 !important; }
+      .neon.dark .dark\:text-gray-400 { color: #94a3b8 !important; }
+      
+      .neon.dark .dark\:border-gray-700 { border-color: #334155 !important; }
+      .neon.dark .dark\:border-gray-600 { border-color: #475569 !important; }
+      .neon.dark .dark\:border-gray-500 { border-color: #64748b !important; }
+
+      /* Buttons & Accents */
+      .neon.dark .bg-indigo-600 { background-color: #0891b2 !important; } /* cyan-600 */
+      .neon.dark .hover\:bg-indigo-700:hover { background-color: #06b6d4 !important; } /* cyan-500 */
+      
+      .neon.dark .bg-green-600 { background-color: #059669 !important; } /* emerald-600 */
+      .neon.dark .hover\:bg-green-700:hover { background-color: #10b981 !important; } /* emerald-500 */
+      
+      .neon.dark .bg-red-600 { background-color: #e11d48 !important; } /* rose-600 */
+      .neon.dark .hover\:bg-red-700:hover { background-color: #f43f5e !important; } /* rose-500 */
+      
+      .neon.dark .bg-blue-600 { background-color: #0284c7 !important; } /* sky-600 */
+      .neon.dark .hover\:bg-blue-700:hover { background-color: #0ea5e9 !important; } /* sky-500 */
+      
+      .neon.dark .bg-teal-600 { background-color: #0d9488 !important; }
+      .neon.dark .hover\:bg-teal-700:hover { background-color: #14b8a6 !important; }
+
+      .neon.dark .text-yellow-500 { color: #f59e0b !important; } /* amber-500 */
+
+      .neon.dark .dark\:bg-green-900\/20 { background-color: rgba(5, 150, 105, 0.2) !important; }
+      .neon.dark .border-green-500 { border-color: #10b981 !important; }
+      .neon.dark .dark\:bg-red-900\/20 { background-color: rgba(225, 29, 72, 0.2) !important; }
+      .neon.dark .border-red-500 { border-color: #f43f5e !important; }
+      .neon.dark .dark\:bg-yellow-900\/20 { background-color: rgba(202, 138, 4, 0.2) !important; }
+      .neon.dark .border-yellow-500 { border-color: #f59e0b !important; }
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Cairo', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-hot-toast": "https://aistudiocdn.com/react-hot-toast@^2.6.0",
+    "jspdf-autotable": "https://aistudiocdn.com/jspdf-autotable@^5.0.2",
+    "jspdf": "https://aistudiocdn.com/jspdf@^3.0.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
