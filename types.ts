@@ -1,3 +1,4 @@
+
 export enum DeviceStatus {
   Available = 'available',
   Busy = 'busy',
@@ -41,7 +42,6 @@ export interface Report {
   endTime: number;
   durationMinutes: number;
   gameType: GameType;
-  playerName?: string;
   cost: number;
   date: string; // YYYY-MM-DD
 }

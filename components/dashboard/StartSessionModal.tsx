@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAppContext } from '../../hooks/useAppContext';
 import { GameType, TimeMode } from '../../types';
@@ -27,15 +28,15 @@ const StartSessionModal: React.FC<Props> = ({ deviceId, onClose }) => {
         <h2 className="text-xl font-bold mb-4">{t('start_session')} - {t('device')} {deviceId}</h2>
         
         <div className="mb-4">
-          <label htmlFor="playerName" className="block font-medium mb-2">{t('player_name')}</label>
-          <input
-            id="playerName"
-            type="text"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-            placeholder={`${t('player_name')} (اختياري)`}
-          />
+            <label htmlFor="playerName" className="block font-medium mb-2">{t('player_name')}</label>
+            <input
+              id="playerName"
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+              placeholder={t('enter_player_name_optional')}
+            />
         </div>
 
         <div className="mb-4">

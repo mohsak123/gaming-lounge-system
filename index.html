@@ -12,49 +12,91 @@
       body {
         font-family: 'Cairo', sans-serif;
       }
-      /* Neon Theme Overrides */
-      .neon.dark body {
-        background-color: #020617; /* slate-950 */
-        color: #f8fafc; /* slate-50 */
+      /* Simple fade-in animation for modals/overlays */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
-      .neon.dark .dark\:bg-gray-900 { background-color: #020617 !important; }
-      .neon.dark .dark\:bg-gray-800 { background-color: #0f172a !important; }
-      .neon.dark .dark\:bg-gray-700 { background-color: #1e293b !important; }
-      .neon.dark .dark\:bg-gray-600 { background-color: #334155 !important; }
+      .animate-fade-in {
+        animation: fadeIn 0.2s ease-out;
+      }
 
-      .neon.dark .dark\:text-gray-100 { color: #f8fafc !important; }
-      .neon.dark .dark\:text-gray-200 { color: #e2e8f0 !important; }
-      .neon.dark .dark\:text-gray-300 { color: #cbd5e1 !important; }
-      .neon.dark .dark\:text-gray-400 { color: #94a3b8 !important; }
-      
-      .neon.dark .dark\:border-gray-700 { border-color: #334155 !important; }
-      .neon.dark .dark\:border-gray-600 { border-color: #475569 !important; }
-      .neon.dark .dark\:border-gray-500 { border-color: #64748b !important; }
+      /* == Custom Dark Theme (Teal/Purple) Overrides == */
+      .dark:not(.theme-blue-orange) body {
+        background-color: #065084;
+        color: #EEEEEE;
+      }
+      /* Cards, Modals, Headers */
+      .dark:not(.theme-blue-orange) .dark\:bg-gray-800 {
+        background-color: #320A6B !important;
+      }
+      /* Inputs, Table Headers, other secondary backgrounds */
+      .dark:not(.theme-blue-orange) .dark\:bg-gray-700 {
+        background-color: #4a2580 !important;
+      }
+      .dark:not(.theme-blue-orange) .dark\:bg-gray-50 {
+        background-color: #4a2580 !important;
+      }
+      /* Borders */
+      .dark:not(.theme-blue-orange) .dark\:border-gray-600 { border-color: #0F828C !important; }
+      .dark:not(.theme-blue-orange) .dark\:border-gray-700 { border-color: #0F828C !important; }
+      .dark:not(.theme-blue-orange) .dark\:divide-gray-700 > :not([hidden]) ~ :not([hidden]) { border-color: #0F828C !important; }
+      /* Text */
+      .dark:not(.theme-blue-orange) .dark\:text-white { color: #FFFFFF !important; }
+      .dark:not(.theme-blue-orange) .dark\:text-gray-100 { color: #f3f4f6 !important; }
+      .dark:not(.theme-blue-orange) .dark\:text-gray-200 { color: #e5e7eb !important; }
+      .dark:not(.theme-blue-orange) .dark\:text-gray-300 { color: #78B9B5 !important; }
+      .dark:not(.theme-blue-orange) .dark\:text-gray-400 { color: #66a6a2 !important; }
+      /* Buttons */
+      .dark:not(.theme-blue-orange) .bg-indigo-600 { background-color: #0F828C !important; color: #FFFFFF !important; }
+      .dark:not(.theme-blue-orange) .hover\:bg-indigo-700:hover { background-color: #0c6b75 !important; }
+      .dark:not(.theme-blue-orange) .focus\:ring-indigo-500:focus { --tw-ring-color: #0F828C !important; border-color: #0F828C !important; }
+      /* NavLink */
+      .dark:not(.theme-blue-orange) nav button.dark\:bg-gray-700 { background-color: #78B9B5 !important; color: #065084 !important; }
+      .dark:not(.theme-blue-orange) nav button.dark\:hover\:bg-gray-700:hover { background-color: rgba(120, 185, 181, 0.2) !important; color: #78B9B5 !important; }
+      /* Status Colors contrast adjustments */
+      .dark:not(.theme-blue-orange) .dark\:text-yellow-300 { color: #FFCC00 !important; }
+      .dark:not(.theme-blue-orange) .dark\:bg-yellow-900\/20 { background-color: rgba(255, 204, 0, 0.25) !important; }
 
-      /* Buttons & Accents */
-      .neon.dark .bg-indigo-600 { background-color: #0891b2 !important; } /* cyan-600 */
-      .neon.dark .hover\:bg-indigo-700:hover { background-color: #06b6d4 !important; } /* cyan-500 */
-      
-      .neon.dark .bg-green-600 { background-color: #059669 !important; } /* emerald-600 */
-      .neon.dark .hover\:bg-green-700:hover { background-color: #10b981 !important; } /* emerald-500 */
-      
-      .neon.dark .bg-red-600 { background-color: #e11d48 !important; } /* rose-600 */
-      .neon.dark .hover\:bg-red-700:hover { background-color: #f43f5e !important; } /* rose-500 */
-      
-      .neon.dark .bg-blue-600 { background-color: #0284c7 !important; } /* sky-600 */
-      .neon.dark .hover\:bg-blue-700:hover { background-color: #0ea5e9 !important; } /* sky-500 */
-      
-      .neon.dark .bg-teal-600 { background-color: #0d9488 !important; }
-      .neon.dark .hover\:bg-teal-700:hover { background-color: #14b8a6 !important; }
 
-      .neon.dark .text-yellow-500 { color: #f59e0b !important; } /* amber-500 */
-
-      .neon.dark .dark\:bg-green-900\/20 { background-color: rgba(5, 150, 105, 0.2) !important; }
-      .neon.dark .border-green-500 { border-color: #10b981 !important; }
-      .neon.dark .dark\:bg-red-900\/20 { background-color: rgba(225, 29, 72, 0.2) !important; }
-      .neon.dark .border-red-500 { border-color: #f43f5e !important; }
-      .neon.dark .dark\:bg-yellow-900\/20 { background-color: rgba(202, 138, 4, 0.2) !important; }
-      .neon.dark .border-yellow-500 { border-color: #f59e0b !important; }
+      /* == Custom Blue/Orange Theme Overrides == */
+      .theme-blue-orange.dark body {
+        background-color: #11224E;
+        color: #EEEEEE;
+      }
+      /* Cards, Modals, Headers */
+      .theme-blue-orange.dark .dark\:bg-gray-800 {
+        background-color: #1a2e66 !important;
+      }
+      /* Inputs, Table Headers, other secondary backgrounds */
+      .theme-blue-orange.dark .dark\:bg-gray-700 {
+        background-color: #2c3a6b !important;
+      }
+      .theme-blue-orange.dark .dark\:bg-gray-50 {
+        background-color: #2c3a6b !important;
+      }
+      /* Borders */
+      .theme-blue-orange.dark .dark\:border-gray-600 { border-color: #415086 !important; }
+      .theme-blue-orange.dark .dark\:border-gray-700 { border-color: #415086 !important; }
+      .theme-blue-orange.dark .dark\:divide-gray-700 > :not([hidden]) ~ :not([hidden]) { border-color: #415086 !important; }
+      /* Text */
+      .theme-blue-orange.dark .dark\:text-white { color: #EEEEEE !important; }
+      .theme-blue-orange.dark .dark\:text-gray-100 { color: #EEEEEE !important; }
+      .theme-blue-orange.dark .dark\:text-gray-200 { color: #EEEEEE !important; }
+      .theme-blue-orange.dark .dark\:text-gray-300 { color: #CBD99B !important; }
+      .theme-blue-orange.dark .dark\:text-gray-400 { color: #a4b37d !important; }
+      /* Buttons */
+      .theme-blue-orange.dark .bg-indigo-600 { background-color: #F87B1B !important; }
+      .theme-blue-orange.dark .hover\:bg-indigo-700:hover { background-color: #d46816 !important; }
+      .theme-blue-orange.dark .focus\:ring-indigo-500:focus { --tw-ring-color: #F87B1B !important; border-color: #F87B1B !important; }
+      /* NavLink */
+      .theme-blue-orange.dark nav button.dark\:bg-gray-700 { background-color: #F87B1B !important; color: #11224E !important; }
+      .theme-blue-orange.dark nav button.dark\:hover\:bg-gray-700:hover { background-color: rgba(248, 123, 27, 0.2) !important; }
+      /* Status Colors contrast adjustments */
+      .theme-blue-orange.dark .dark\:bg-red-900\/20 { background-color: rgba(239, 68, 68, 0.25) !important; }
+      .theme-blue-orange.dark .dark\:bg-yellow-900\/20 { background-color: rgba(234, 179, 8, 0.25) !important; }
+      .theme-blue-orange.dark .dark\:text-yellow-300 { color: #fde047 !important; }
+      .theme-blue-orange.dark .dark\:bg-green-900\/20 { background-color: rgba(34, 197, 94, 0.25) !important; }
     </style>
     <script>
       tailwind.config = {
@@ -84,6 +126,8 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>

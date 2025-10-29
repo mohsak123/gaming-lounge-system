@@ -20,10 +20,11 @@ export const INITIAL_CREDENTIALS: Credentials = {
 };
 
 export const INITIAL_LABELS = {
+  app_title: "نظام صالة الألعاب",
   dashboard: "لوحة التحكم",
   reports: "التقارير",
   admin: "الإدارة",
-  theme_switcher: "تغيير المظهر",
+  theme_switcher: "تغيير الثيم",
   login_page_title: "تسجيل دخول - نظام صالة الألعاب",
   username: "اسم المستخدم",
   password: "كلمة المرور",
@@ -33,7 +34,7 @@ export const INITIAL_LABELS = {
   busy: "مشغول",
   maintenance: "تحت الصيانة",
   start_session: "بدء جلسة",
-  end_session: "إنهاء الجلساة",
+  end_session: "إنهاء الجلسة",
   session_details: "تفاصيل الجلسة",
   game_type: "نوع اللعب",
   double: "زوجي",
@@ -99,6 +100,13 @@ export const INITIAL_LABELS = {
   new_login_password: "كلمة سر الدخول الجديدة",
   new_admin_password: "كلمة سر الإدارة الجديدة",
   store_securely_warning: "هام: يرجى تخزين هذه المعلومات في مكان آمن. لا يمكن استعادتها.",
-  player_name: "اسم اللاعب",
   passwords_updated_success: "تم تحديث كلمات المرور بنجاح!",
+  search_by_device_name: "البحث باسم الجهاز...",
+  all_statuses: "كل الحالات",
+  no_devices_match_search: "لا توجد أجهزة تطابق معايير البحث.",
+  player_name: "اسم اللاعب",
+  enter_player_name_optional: "أدخل اسم اللاعب (اختياري)",
+  session_ended_summary_title: "انتهت الجلسة",
+  player_must_pay: "المبلغ المطلوب دفعه",
+  close: "إغلاق",
 };

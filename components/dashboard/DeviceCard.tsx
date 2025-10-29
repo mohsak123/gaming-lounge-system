@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Device, DeviceStatus, Session } from '../../types';
@@ -6,12 +7,13 @@ import StartSessionModal from './StartSessionModal';
 import ExtendSessionModal from './ExtendSessionModal';
 import TimeUpModal from './TimeUpModal';
 import { useTranslation } from '../../hooks/useTranslation';
-import { UsersIcon, UserGroupIcon, ClockIcon, InformationCircleIcon } from '../ui/Icons';
+import { UsersIcon, UserGroupIcon, ClockIcon, InformationCircleIcon, UserIcon, XIcon } from '../ui/Icons';
 
 const DeviceCard: React.FC<{ device: Device }> = ({ device }) => {
   const { sessions, endSession, updateSession, prices } = useAppContext();
   const session = sessions[device.id];
   const [isStartModalOpen, setStartModalOpen] = useState(false);
+  const [isQuickViewOpen, setQuickViewOpen] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
   const { t } = useTranslation();
 
@@ -130,9 +132,19 @@ const DeviceCard: React.FC<{ device: Device }> = ({ device }) => {
     <>
       <div className={`relative p-4 rounded-lg border-2 shadow-sm transition-all duration-300 ${getStatusClasses()}`}>
         <StatusBadge />
+        {device.status === DeviceStatus.Busy && (
+            <button
+              onClick={() => setQuickViewOpen(true)}
+              className="absolute top-2 right-2 p-1 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors z-10"
+              aria-label="Show session details"
+            >
+              <InformationCircleIcon className="h-6 w-6" />
+            </button>
+        )}
+
         <h3 className="text-xl font-bold text-center mt-6">{t('device')} {device.name}</h3>
         
-        <div className="mt-4 min-h-[120px] flex flex-col items-center justify-center">
+        <div className="mt-4 min-h-[100px] flex flex-col items-center justify-center">
             {device.status === DeviceStatus.Available && (
                 <button onClick={() => setStartModalOpen(true)} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{t('start_session')}</button>
             )}
@@ -140,26 +152,48 @@ const DeviceCard: React.FC<{ device: Device }> = ({ device }) => {
                 <p className="text-yellow-600 dark:text-yellow-400">{t('maintenance')}</p>
             )}
             {device.status === DeviceStatus.Busy && session && (
-                <div className="w-full text-center">
+                <div className="w-full text-center space-y-2">
+                    {session.playerName && (
+                        <div className="flex justify-center items-center gap-2 text-md font-semibold text-gray-800 dark:text-gray-200">
+                            <UserIcon className="h-5 w-5" />
+                            <span>{session.playerName}</span>
+                        </div>
+                    )}
                     <div className="flex justify-center items-center gap-4 text-lg font-semibold">
                         {session.gameType === 'double' ? <UsersIcon className="h-6 w-6"/> : <UserGroupIcon className="h-6 w-6" />}
                         <span>{session.gameType === 'double' ? t('double') : t('quad')}</span>
                     </div>
-                     {session.playerName && (
-                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-300 font-semibold truncate" title={session.playerName}>
-                        {session.playerName}
-                      </p>
-                    )}
-                    <div className="my-2 text-2xl font-mono tracking-wider">
+                    <div className="text-2xl font-mono tracking-wider pt-1">
                       {timeRemaining}
                     </div>
-                     <p className="text-sm text-gray-500 dark:text-gray-400">
+                     <p className="text-sm text-gray-500 dark:text-gray-400 -mt-1">
                         {session.timeMode === 'timed' ? t('time_remaining') : t('open_time')}
                      </p>
-                    <button onClick={handleEndSessionRequest} className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">{t('end_session')}</button>
+                    <button onClick={handleEndSessionRequest} className="!mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">{t('end_session')}</button>
                 </div>
             )}
         </div>
+        
+        {isQuickViewOpen && session && (
+          <div className="absolute inset-0 bg-white/90 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center p-4 animate-fade-in z-20">
+            <button
+              onClick={() => setQuickViewOpen(false)}
+              className="absolute top-2 right-2 p-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+              aria-label="Close details"
+            >
+              <XIcon className="h-6 w-6" />
+            </button>
+            <h4 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200">{t('session_details')}</h4>
+            <div className="space-y-2 text-center text-gray-700 dark:text-gray-300">
+               {session.playerName && (
+                  <p><strong>{t('player_name')}:</strong> {session.playerName}</p>
+               )}
+               <p><strong>{t('start_time')}:</strong> {new Date(session.startTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
+               <p><strong>{t('game_type')}:</strong> {t(session.gameType)}</p>
+            </div>
+          </div>
+        )}
+
       </div>
       {isStartModalOpen && <StartSessionModal deviceId={device.id} onClose={() => setStartModalOpen(false)} />}
       {session?.showExtendModal && <ExtendSessionModal deviceId={device.id} onClose={() => updateSession(device.id, { showExtendModal: false })} />}

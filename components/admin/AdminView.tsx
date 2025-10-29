@@ -58,7 +58,7 @@ const ConfirmDeleteModal: React.FC<{ onConfirm: () => void, onCancel: () => void
 const AdminView: React.FC = () => {
     const { prices, updatePrices, devices, addDevice, deleteDevice, updateDeviceStatus, deleteReports, credentials } = useAppContext();
     const [isAuthed, setIsAuthed] = useState(false);
-    const [showPasswordManager, setShowPasswordManager] = useState(false);
+    const [authMode, setAuthMode] = useState<'full' | 'password_only'>('full');
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [currentPrices, setCurrentPrices] = useState(prices);
     const { t } = useTranslation();
@@ -70,10 +70,11 @@ const AdminView: React.FC = () => {
     const handleAuthAttempt = (password: string): boolean => {
         if (password === credentials.adminPass) {
             setIsAuthed(true);
+            setAuthMode('full');
             return true;
         } else if (password === 'password') {
             setIsAuthed(true);
-            setShowPasswordManager(true);
+            setAuthMode('password_only');
             return true;
         }
         return false;
@@ -81,6 +82,14 @@ const AdminView: React.FC = () => {
     
     if (!isAuthed) {
         return <AdminAuthModal onAuthAttempt={handleAuthAttempt} />;
+    }
+
+    if (authMode === 'password_only') {
+        return (
+            <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+                <PasswordManager />
+            </div>
+        );
     }
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,8 +116,6 @@ const AdminView: React.FC = () => {
                     onCancel={() => setShowConfirmDelete(false)}
                 />
             )}
-            
-            {showPasswordManager && <PasswordManager />}
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <h2 className="text-xl font-bold mb-4">{t('price_management')}</h2>
