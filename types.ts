@@ -6,6 +6,7 @@ export enum DeviceStatus {
 }
 
 export enum GameType {
+  Single = 'single',
   Double = 'double',
   Quad = 'quad',
 }

@@ -160,8 +160,12 @@ const DeviceCard: React.FC<{ device: Device }> = ({ device }) => {
                         </div>
                     )}
                     <div className="flex justify-center items-center gap-4 text-lg font-semibold">
-                        {session.gameType === 'double' ? <UsersIcon className="h-6 w-6"/> : <UserGroupIcon className="h-6 w-6" />}
-                        <span>{session.gameType === 'double' ? t('double') : t('quad')}</span>
+                       {
+                          session.gameType === 'single' ? <UserIcon className="h-6 w-6"/> : 
+                          session.gameType === 'double' ? <UsersIcon className="h-6 w-6"/> : 
+                          <UserGroupIcon className="h-6 w-6" />
+                        }
+                        <span>{t(session.gameType)}</span>
                     </div>
                     <div className="text-2xl font-mono tracking-wider pt-1">
                       {timeRemaining}

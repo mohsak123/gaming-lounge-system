@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../../hooks/useAppContext';
-import { DeviceStatus } from '../../types';
+import { DeviceStatus, Page } from '../../types';
 import { useTranslation } from '../../hooks/useTranslation';
 import LabelEditor from './LabelEditor';
 import PasswordManager from './PasswordManager';
 
-const AdminAuthModal: React.FC<{ onAuthAttempt: (password: string) => boolean }> = ({ onAuthAttempt }) => {
+const AdminAuthModal: React.FC<{ onAuthAttempt: (password: string) => boolean, onCancel: () => void }> = ({ onAuthAttempt, onCancel }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const { t } = useTranslation();
@@ -31,34 +31,82 @@ const AdminAuthModal: React.FC<{ onAuthAttempt: (password: string) => boolean }>
                     autoFocus
                 />
                 {error && <p className="text-red-500 text-xs mt-1">كلمة المرور غير صحيحة.</p>}
-                <button type="submit" className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                    {t('submit')}
-                </button>
+                <div className="mt-6 flex justify-end gap-4">
+                    <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 font-semibold transition-colors">
+                        {t('cancel')}
+                    </button>
+                    <button type="submit" className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors">
+                        {t('submit')}
+                    </button>
+                </div>
             </form>
         </div>
     );
 };
 
-const ConfirmDeleteModal: React.FC<{ onConfirm: () => void, onCancel: () => void }> = ({ onConfirm, onCancel }) => {
+const ConfirmDeleteModal: React.FC<{ onConfirmDelete: () => void, onCancel: () => void, adminPass: string }> = ({ onConfirmDelete, onCancel, adminPass }) => {
     const { t } = useTranslation();
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
-                <h3 className="text-lg font-bold text-red-600 dark:text-red-400">{t('confirm_delete_all_reports')}</h3>
-                <p className="my-4">{t('confirm_delete_all_reports')}</p>
-                <div className="flex justify-end gap-4">
-                    <button onClick={onCancel} className="px-4 py-2 rounded bg-gray-300 dark:bg-gray-600">{t('cancel')}</button>
-                    <button onClick={onConfirm} className="px-4 py-2 rounded bg-red-600 text-white">{t('confirm_delete')}</button>
+    const [step, setStep] = useState<'initial' | 'password'>('initial');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+
+    const handleInitialConfirm = () => {
+        setStep('password');
+    };
+
+    const handlePasswordSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (password === adminPass) {
+            onConfirmDelete();
+        } else {
+            setError(true);
+        }
+    };
+
+    if (step === 'initial') {
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
+                    <h3 className="text-lg font-bold text-red-600 dark:text-red-400">{t('confirm_delete_all_reports')}</h3>
+                    <p className="my-4">{t('confirm_delete_all_reports')}</p>
+                    <div className="flex justify-end gap-4">
+                        <button onClick={onCancel} className="px-4 py-2 rounded bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500">{t('cancel')}</button>
+                        <button onClick={handleInitialConfirm} className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">{t('confirm_delete')}</button>
+                    </div>
                 </div>
             </div>
+        );
+    }
+    
+    // step === 'password'
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
+            <form onSubmit={handlePasswordSubmit} className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
+                <h3 className="text-lg font-bold">{t('enter_admin_password')}</h3>
+                <p className="my-2 text-sm text-gray-600 dark:text-gray-400">{t('confirm_delete_password_prompt')}</p>
+                 <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); setError(false); }}
+                    className={`w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 mt-4 ${error ? 'border-red-500' : ''}`}
+                    autoFocus
+                />
+                {error && <p className="text-red-500 text-xs mt-1">كلمة المرور غير صحيحة.</p>}
+                <div className="flex justify-end gap-4 mt-6">
+                    <button type="button" onClick={onCancel} className="px-4 py-2 rounded bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500">{t('cancel')}</button>
+                    <button type="submit" className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">{t('confirm_delete')}</button>
+                </div>
+            </form>
         </div>
     );
 };
 
+
 const AdminView: React.FC = () => {
-    const { prices, updatePrices, devices, addDevice, deleteDevice, updateDeviceStatus, deleteReports, credentials } = useAppContext();
+    const { prices, updatePrices, devices, addDevice, deleteDevice, updateDeviceStatus, deleteReports, credentials, setPage } = useAppContext();
     const [isAuthed, setIsAuthed] = useState(false);
     const [authMode, setAuthMode] = useState<'full' | 'password_only'>('full');
+    const [showLabelEditor, setShowLabelEditor] = useState(false);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [currentPrices, setCurrentPrices] = useState(prices);
     const { t } = useTranslation();
@@ -71,17 +119,24 @@ const AdminView: React.FC = () => {
         if (password === credentials.adminPass) {
             setIsAuthed(true);
             setAuthMode('full');
+            setShowLabelEditor(false);
+            return true;
+        } else if (password === 'names') {
+            setIsAuthed(true);
+            setAuthMode('full');
+            setShowLabelEditor(true);
             return true;
         } else if (password === 'password') {
             setIsAuthed(true);
             setAuthMode('password_only');
+            setShowLabelEditor(false);
             return true;
         }
         return false;
     };
     
     if (!isAuthed) {
-        return <AdminAuthModal onAuthAttempt={handleAuthAttempt} />;
+        return <AdminAuthModal onAuthAttempt={handleAuthAttempt} onCancel={() => setPage(Page.DASHBOARD)} />;
     }
 
     if (authMode === 'password_only') {
@@ -112,14 +167,19 @@ const AdminView: React.FC = () => {
         <div className="space-y-8">
              {showConfirmDelete && (
                 <ConfirmDeleteModal 
-                    onConfirm={handleConfirmDeleteReports}
+                    onConfirmDelete={handleConfirmDeleteReports}
                     onCancel={() => setShowConfirmDelete(false)}
+                    adminPass={credentials.adminPass}
                 />
             )}
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <h2 className="text-xl font-bold mb-4">{t('price_management')}</h2>
                 <form onSubmit={handlePriceUpdate} className="space-y-4">
+                    <div>
+                        <label className="block font-medium">{t('single_price_per_hour')}</label>
+                        <input type="number" name="single" value={currentPrices.single} onChange={handlePriceChange} className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600" />
+                    </div>
                     <div>
                         <label className="block font-medium">{t('double_price_per_hour')}</label>
                         <input type="number" name="double" value={currentPrices.double} onChange={handlePriceChange} className="w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600" />
@@ -167,7 +227,7 @@ const AdminView: React.FC = () => {
                 <button onClick={() => setShowConfirmDelete(true)} className="px-4 py-2 rounded bg-red-600 text-white">{t('delete_all_reports')}</button>
             </div>
             
-            <LabelEditor />
+            {showLabelEditor && <LabelEditor />}
 
         </div>
     );

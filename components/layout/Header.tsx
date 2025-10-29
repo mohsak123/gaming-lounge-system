@@ -34,7 +34,7 @@ const DateTimeDisplay: React.FC = () => {
   const formattedDate = currentDateTime.toLocaleString('en-US', dateOptions);
 
   return (
-    <div className="text-right flex-shrink-0">
+    <div className="text-right truncate">
       <div className="hidden sm:block text-xs font-semibold text-gray-600 dark:text-gray-400">{formattedDate}</div>
       <div className="text-base sm:text-lg font-mono font-bold text-gray-800 dark:text-gray-200">{formattedTime}</div>
     </div>
@@ -75,7 +75,7 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* LEFT WING */}
-          <div className="flex-1 flex justify-start">
+          <div className="flex-1 flex justify-start min-w-0">
             <DateTimeDisplay />
           </div>
 
@@ -87,7 +87,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* RIGHT WING */}
-          <div className="flex-1 flex justify-end items-center">
+          <div className="flex-1 flex justify-end items-center min-w-0">
             <nav className="hidden md:flex items-center space-x-4 space-x-reverse">
               <NavLink targetPage={Page.DASHBOARD}>{t('dashboard')}</NavLink>
               <NavLink targetPage={Page.REPORTS}>{t('reports')}</NavLink>

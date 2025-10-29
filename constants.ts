@@ -9,6 +9,7 @@ export const INITIAL_DEVICES: Device[] = [
 ];
 
 export const INITIAL_PRICES = {
+  single: 10, // per hour
   double: 20, // per hour
   quad: 30,   // per hour
 };
@@ -37,6 +38,7 @@ export const INITIAL_LABELS = {
   end_session: "إنهاء الجلسة",
   session_details: "تفاصيل الجلسة",
   game_type: "نوع اللعب",
+  single: "فردي",
   double: "زوجي",
   quad: "رباعي",
   time_mode: "نمط التوقيت",
@@ -70,6 +72,7 @@ export const INITIAL_LABELS = {
   enter_admin_password: "الرجاء إدخال كلمة مرور المدير للوصول",
   submit: "إرسال",
   price_management: "إدارة الأسعار",
+  single_price_per_hour: "سعر اللعب الفردي (للساعة)",
   double_price_per_hour: "سعر اللعب الزوجي (للساعة)",
   quad_price_per_hour: "سعر اللعب الرباعي (للساعة)",
   update_prices: "تحديث الأسعار",
@@ -80,6 +83,7 @@ export const INITIAL_LABELS = {
   delete_all_reports: "حذف جميع التقارير",
   confirm_delete_all_reports: "هل أنت متأكد من رغبتك في حذف جميع التقارير؟ لا يمكن التراجع عن هذا الإجراء.",
   confirm_delete: "تأكيد الحذف",
+  confirm_delete_password_prompt: "للتأكيد، يرجى إدخال كلمة مرور المدير للمتابعة.",
   label_management: "إدارة التسميات",
   page_title: "عنوان الصفحة",
   label_text: "نص التسمية",

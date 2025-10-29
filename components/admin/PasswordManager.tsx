@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAppContext } from '../../hooks/useAppContext';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -18,23 +17,24 @@ const PasswordManager: React.FC = () => {
 
         const doc = new jsPDF();
         
-        // Note: jsPDF has limited support for RTL languages like Arabic.
-        // For production, a library like 'jspdf-autotable' with font embedding would be needed for proper text rendering.
-        // We are including English labels as a fallback for the PDF content.
+        doc.setFontSize(18);
+        doc.text('Password Change Report', 105, 20, { align: 'center' });
         
-        doc.text('Password Change Report / تقرير تغيير كلمة المرور', 105, 15, { align: 'center' });
-        doc.text(`Date / التاريخ: ${new Date().toLocaleString('en-US')}`, 14, 30);
+        doc.setFontSize(12);
+        doc.text(`Date: ${new Date().toLocaleString('en-US')}`, 14, 35);
         
-        doc.text(`New Login Username: ${newCreds.loginUser}`, 14, 45);
-        doc.text(`New Login Password: ${newCreds.loginPass}`, 14, 55);
-        doc.text(`New Admin Panel Password: ${newCreds.adminPass}`, 14, 65);
+        doc.line(14, 40, 196, 40); // separator line
+
+        doc.text(`New Login Username: ${newCreds.loginUser}`, 14, 50);
+        doc.text(`New Login Password: ${newCreds.loginPass}`, 14, 60);
+        doc.text(`New Admin Panel Password: ${newCreds.adminPass}`, 14, 70);
+        
+        doc.line(14, 80, 196, 80); // separator line
         
         doc.setFontSize(10);
-        doc.setTextColor(255, 0, 0);
+        doc.setTextColor(255, 0, 0); // Red color for warning
         const warningText = 'IMPORTANT: Please store this information securely. It cannot be recovered.';
-        const warningTextAr = 'هام: يرجى تخزين هذه المعلومات في مكان آمن. لا يمكن استعادتها.';
-        doc.text(warningText, 105, 80, { align: 'center' });
-        doc.text(warningTextAr, 105, 85, { align: 'center' });
+        doc.text(warningText, 105, 90, { align: 'center' });
 
         doc.save(`password-report-${new Date().toISOString().split('T')[0]}.pdf`);
 

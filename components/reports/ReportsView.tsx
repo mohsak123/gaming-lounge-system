@@ -79,25 +79,39 @@ const ReportsView: React.FC = () => {
 
   const handlePrintPDF = async () => {
     const doc = new jsPDF();
-    
-    doc.text(`Report for ${selectedDate}`, 105, 15, { align: 'center' });
+    const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+    const pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(40);
+    doc.text("Gaming Lounge Daily Report", pageWidth / 2, 22, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text(`Date: ${selectedDate}`, pageWidth / 2, 30, { align: 'center' });
 
     autoTable(doc, {
+      startY: 40,
       head: [['Device ID', 'Start Time', 'End Time', 'Duration (min)', 'Game Type', 'Cost']],
       body: filteredReports.map(r => [
         r.deviceId,
-        new Date(r.startTime).toLocaleTimeString('en-US'),
-        new Date(r.endTime).toLocaleTimeString('en-US'),
-        `${r.durationMinutes}`,
+        new Date(r.startTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        new Date(r.endTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        r.durationMinutes,
         r.gameType.charAt(0).toUpperCase() + r.gameType.slice(1),
         r.cost.toFixed(2),
       ]),
+      theme: 'grid',
+      headStyles: { fillColor: [79, 70, 229] }, // A professional blue color (indigo-600)
+      foot: [['Total', '', '', '', '', totalRevenue.toFixed(2)]],
+      footStyles: { fillColor: [240, 240, 240], textColor: 0, fontStyle: 'bold' },
       didDrawPage: (data) => {
-        doc.text(`Report Details`, data.settings.margin.left, 10);
+        // Footer
+        const pageCount = (doc as any).internal.getNumberOfPages();
+        doc.setFontSize(10);
+        doc.text(`Page ${doc.getCurrentPageInfo().pageNumber} of ${pageCount}`, data.settings.margin.left, pageHeight - 10);
+        doc.text(`Generated on: ${new Date().toLocaleString('en-US')}`, pageWidth - data.settings.margin.right, pageHeight - 10, { align: 'right' });
       },
     });
-
-    doc.text(`Total: ${totalRevenue.toFixed(2)}`, 14, (doc as any).lastAutoTable.finalY + 10);
 
     doc.save(`report_${selectedDate}.pdf`);
   };

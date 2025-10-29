@@ -11,7 +11,7 @@ interface Props {
 
 const StartSessionModal: React.FC<Props> = ({ deviceId, onClose }) => {
   const { startSession } = useAppContext();
-  const [gameType, setGameType] = useState<GameType>(GameType.Double);
+  const [gameType, setGameType] = useState<GameType>(GameType.Single);
   const [timeMode, setTimeMode] = useState<TimeMode>(TimeMode.Open);
   const [duration, setDuration] = useState<number>(60);
   const [playerName, setPlayerName] = useState('');
@@ -41,7 +41,8 @@ const StartSessionModal: React.FC<Props> = ({ deviceId, onClose }) => {
 
         <div className="mb-4">
           <label className="block font-medium mb-2">{t('game_type')}</label>
-          <div className="flex gap-4">
+          <div className="flex gap-2">
+            <button onClick={() => setGameType(GameType.Single)} className={`flex-1 p-2 rounded ${gameType === GameType.Single ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}>{t('single')}</button>
             <button onClick={() => setGameType(GameType.Double)} className={`flex-1 p-2 rounded ${gameType === GameType.Double ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}>{t('double')}</button>
             <button onClick={() => setGameType(GameType.Quad)} className={`flex-1 p-2 rounded ${gameType === GameType.Quad ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}>{t('quad')}</button>
           </div>

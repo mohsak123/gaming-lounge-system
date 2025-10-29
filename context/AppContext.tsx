@@ -19,8 +19,8 @@ interface AppContextType {
   reports: Report[];
   addReport: (report: Omit<Report, 'id' | 'date'>) => Report;
   deleteReports: () => void;
-  prices: { double: number; quad: number };
-  updatePrices: (newPrices: { double: number; quad: number }) => void;
+  prices: { single: number; double: number; quad: number };
+  updatePrices: (newPrices: { single: number; double: number; quad: number }) => void;
   page: Page;
   setPage: (page: Page) => void;
   labels: AppLabels;
@@ -165,7 +165,22 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const endTime = Date.now();
     const durationMinutes = Math.floor((endTime - session.startTime) / (1000 * 60));
-    const pricePerHour = session.gameType === GameType.Double ? prices.double : prices.quad;
+    
+    let pricePerHour: number;
+    switch (session.gameType) {
+        case GameType.Single:
+            pricePerHour = prices.single;
+            break;
+        case GameType.Double:
+            pricePerHour = prices.double;
+            break;
+        case GameType.Quad:
+            pricePerHour = prices.quad;
+            break;
+        default:
+            pricePerHour = 0; // Fallback
+    }
+
     const cost = (durationMinutes / 60) * pricePerHour;
     
     const newReport = addReport({ deviceId, startTime: session.startTime, endTime, durationMinutes, gameType: session.gameType, cost });
@@ -181,7 +196,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const deleteReports = () => setReports([]);
   
-  const updatePrices = (newPrices: { double: number; quad: number }) => setPrices(newPrices);
+  const updatePrices = (newPrices: { single: number; double: number; quad: number }) => setPrices(newPrices);
   
   const updateLabels = (newLabels: AppLabels) => setLabels(newLabels);
 
